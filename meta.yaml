@@ -1,0 +1,6 @@
+name: Language URL
+version: "1.0"
+description: Return the URL of the current page in the specified locale.
+url: http://github.com/bcartier/LangUrl
+developer: Brent Cartier
+developer_url: http://github.com/bcartier
