@@ -23,6 +23,7 @@ class LangUrlTags extends Tags
 
         $url = "";
         $route = "";
+        $slug = "";
         $content_id = $context["id"];
         $content_uri = $context["uri"];
         $locale = $this->getParam('locale');
@@ -35,7 +36,9 @@ class LangUrlTags extends Tags
 
         $contentObject = Data::find($context["id"])->in($locale);
         $data = $contentObject->get()->dataForLocale($locale);
-        $slug = $data['slug'];
+        if( key_exists('slug',$data)  ){
+          $slug = $data['slug'];
+        }
 
         if( key_exists('is_entry',$context)  ){
           $collection = $context["collection"];
@@ -45,7 +48,9 @@ class LangUrlTags extends Tags
           } elseif( is_string($collectionRoute) ) {
             $route = $collectionRoute;
           }
-          $localized_url = str_replace("{slug}",$slug, $route );
+          if($slug != ""){
+            $localized_url = str_replace("{slug}",$slug, $route );
+          }
         }
 
         if( key_exists('is_page',$context)  ){
