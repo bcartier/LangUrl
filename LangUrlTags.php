@@ -19,18 +19,20 @@ class LangUrlTags extends Tags
     {
         $context = $this->context;
 
+        $locale = $this->getParam('locale', 'default');
+        if ($locale == 'default') {
+            $locale = default_locale();
+        }
+
+        // generate url to frontpage if no page or entry is in the context
+        if (!array_key_exists('id', $context)) {
+            return URL::prependSiteUrl('/', $locale);
+        }
+
         $route = "";
         $slug = "";
         $content_id = $context["id"];
         $content_uri = $context["uri"];
-        $locale = $this->getParam('locale', 'default');
-
-        if($locale == "default"){
-          $test = Data::find($context["id"])->in("en");
-          $url = $test->uri();
-          return $url;
-        }
-
         $contentObject = Data::find($context["id"])->in($locale);
         $data = $contentObject->get()->dataForLocale($locale);
         if( array_key_exists('slug',$data)  ){

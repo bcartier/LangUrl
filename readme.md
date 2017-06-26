@@ -11,6 +11,3 @@ Intended to help build a language toggle for Statamic 2. For example, in a Engli
   <a href='{{ lang_url locale="default" }}'>English</a>
 {{/if}
 ```
-## To Do:
- - Detect the default language instead of requiring "default" as the locale parameter.
- - Do not hardcode `en` as default locale
