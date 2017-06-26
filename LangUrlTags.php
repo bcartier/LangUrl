@@ -11,22 +11,19 @@ use Statamic\Data\Services\PagesService;
 class LangUrlTags extends Tags
 {
     /**
-     * The {{ language_url }} tag
+     * The {{ lang_url }} tag
      *
      * @return string|array
      */
     public function index()
     {
-        //
-
         $context = $this->context;
 
-        $url = "";
         $route = "";
         $slug = "";
         $content_id = $context["id"];
         $content_uri = $context["uri"];
-        $locale = $this->getParam('locale');
+        $locale = $this->getParam('locale', 'default');
 
         if($locale == "default"){
           $test = Data::find($context["id"])->in("en");
@@ -36,11 +33,11 @@ class LangUrlTags extends Tags
 
         $contentObject = Data::find($context["id"])->in($locale);
         $data = $contentObject->get()->dataForLocale($locale);
-        if( key_exists('slug',$data)  ){
+        if( array_key_exists('slug',$data)  ){
           $slug = $data['slug'];
         }
 
-        if( key_exists('is_entry',$context)  ){
+        if( array_key_exists('is_entry',$context)  ){
           $collection = $context["collection"];
           $collectionRoute = $context["settings"]["routes"]["collections"][$collection];
           if( is_array($collectionRoute) ){
@@ -53,7 +50,7 @@ class LangUrlTags extends Tags
           }
         }
 
-        if( key_exists('is_page',$context)  ){
+        if( array_key_exists('is_page',$context)  ){
 
           $localized_url = app(PagesService::class)
             ->localizedUris($locale)
@@ -63,17 +60,5 @@ class LangUrlTags extends Tags
         $url = URL::prependSiteUrl($localized_url , $locale);
 
         return $url ;
-
-
-    }
-
-    /**
-     * The {{ language_url:example }} tag
-     *
-     * @return string|array
-     */
-    public function example()
-    {
-        //
     }
 }
